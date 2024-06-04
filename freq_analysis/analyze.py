@@ -1,33 +1,37 @@
-class TxtAnalyze:
-    def __init__(self, path) -> None:
-        self.__path = path
-        
-    def create_histogram(self):
-        with open(self.__path, 'r', encoding='ascii') as f:
-            histogram = [0] * 256
-            
-            for line in f:
-                for char in line:
-                    value = ord(char)
-                    histogram[value] += 1
-        
-        return histogram
-    
-    
-class BmpAnalyze:
-    
-    def __init__(self, path) -> None:
-        self.__path = path
-        
-        
-    def create_histogram(self):
-        with open (self.__path, 'rb') as f:
-            f.read(54)
-            histogram = [0] * 256
-            byte = f.read(1)
-            while byte:
-                value = int.from_bytes(byte, byteorder='little')
-                histogram[value] += 1
-                byte = f.read(1) 
+from collections import Counter
+from PIL import Image
+from math import log2
 
-        return histogram
+
+def compute_entropy(frequency):
+    total = sum(frequency.values())
+    if total == 0:
+        return 0
+    entropy = -sum(
+        (count / total) * log2(count / total) if count != 0 else 0
+        for count in frequency.values()
+    )
+    return entropy
+
+
+class TxtAnalyze:
+    def analyze_file(self, file_path):
+        with open(file_path, "rb") as file:
+            content = file.read()
+            frequency = Counter(content)
+        return {"text": frequency, "text_entropy": compute_entropy(frequency)}
+
+
+class BmpAnalyze:
+    def analyze_file(self, file_path):
+        image = Image.open(file_path)
+        r, g, b = image.split()
+        r_freq = Counter(r.getdata())
+        g_freq = Counter(g.getdata())
+        b_freq = Counter(b.getdata())
+        entropy = {
+            "red": compute_entropy(r_freq),
+            "green": compute_entropy(g_freq),
+            "blue": compute_entropy(b_freq),
+        }
+        return {"red": r_freq, "green": g_freq, "blue": b_freq, "entropy": entropy}

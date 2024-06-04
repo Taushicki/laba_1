@@ -1,20 +1,14 @@
+from freq_analysis.analyze import BmpAnalyze, TxtAnalyze
 from histogram.build import BuildHistogram
-from freq_analysis.analyze import *
 
 
 if __name__ == '__main__':
-    # for i, freq in enumerate(BmpAnalyze('res/bmp_img.bmp').create_histogram()):
-    #     print(f"Byte value {i}: {freq} occurrences")
-    # for i, freq in enumerate(TxtAnalyze('res/txtfile.txt').create_histogram()):
-    #     print(f"Character '{chr(i)}' ({i}): {freq} occurrences")
-        
-    
-    # BuildHistogram(BmpAnalyze('res/bmp_photoshop.bmp').create_histogram())
-    # BuildHistogram(BmpAnalyze('res/bmp_template.bmp').create_histogram())
-    # BuildHistogram(BmpAnalyze('res/bmp_img.bmp').create_histogram())
-    # BuildHistogram(BmpAnalyze('res/bmp_black.bmp').create_histogram())
-    
-    # BuildHistogram(TxtAnalyze('res/txtfile.txt').create_histogram())
-    BuildHistogram(TxtAnalyze('res/literatura.txt').create_histogram())
-    # BuildHistogram(TxtAnalyze('res/scientific.txt').create_histogram())
-    # BuildHistogram(TxtAnalyze('res/gpt.txt').create_histogram())
+    BuildHistogram(BmpAnalyze().analyze_file('res/bmp_photoshop.bmp'))
+    BuildHistogram(BmpAnalyze().analyze_file('res/bmp_template.bmp'))
+    BuildHistogram(BmpAnalyze().analyze_file('res/bmp_img.bmp'))
+    BuildHistogram(BmpAnalyze().analyze_file('res/bmp_adobe.bmp'))
+
+    BuildHistogram(TxtAnalyze().analyze_file('res/txtfile.txt'))
+    BuildHistogram(TxtAnalyze().analyze_file('res/literatura.txt'))
+    BuildHistogram(TxtAnalyze().analyze_file('res/scientific.txt'))
+    BuildHistogram(TxtAnalyze().analyze_file('res/dialog.txt'))
